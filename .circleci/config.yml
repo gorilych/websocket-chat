@@ -1,0 +1,35 @@
+version: 2
+
+workflows:
+  version: 2
+  build_push_workflow:
+    jobs:
+    - build_push:
+        context: gorilych
+
+jobs:
+  build_push:
+    # Environment variables from context: DOCKER_USER, DOCKER_PASS
+    # Environment variables from project: IMAGE_SERVER, IMAGE_CLIENT
+    docker:
+    - image: circleci/python:3.6.6
+    steps:
+    - checkout
+    - setup_remote_docker:
+        docker_layer_caching: true
+    - run:
+        name: Docker auth
+        command: echo "${DOCKER_PASS}" | docker login --password-stdin --username ${DOCKER_USER}
+    - run:
+        name: Build server image
+        command: docker build -f Dockerfile.server -t ${IMAGE_SERVER}:$CIRCLE_SHA1 .
+    - run:
+        name: Push server image to registry
+        command: docker push ${IMAGE_SERVER}:$CIRCLE_SHA1
+    - run:
+        name: Build client image
+        command: docker build -f Dockerfile.client -t ${IMAGE_CLIENT}:$CIRCLE_SHA1 .
+    - run:
+        name: Push client image to registry
+        command: docker push ${IMAGE_CLIENT}:$CIRCLE_SHA1
+
