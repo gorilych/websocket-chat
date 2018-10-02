@@ -1,0 +1,10 @@
+FROM nginx:3.6
+
+ENV WS_SERVER "ws://localhost:8080/"
+
+COPY html5client /usr/share/nginx/html
+COPY client.entrypoint.sh /
+RUN chmod +x /client.entrypoint.sh
+
+ENTRYPOINT /client.entrypoint.sh
+

@@ -1,4 +1,4 @@
-var server = 'ws://localhost:8080/';
+var server = 'WS_SERVER';
 
 function zPad(n) {
     if (n < 10) return '0' + n;
