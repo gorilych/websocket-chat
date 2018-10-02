@@ -5,7 +5,7 @@ EXPOSE 8080
 RUN mkdir /app
 WORKDIR /app
 
-COPY server/ /app/
+COPY server server
 
 RUN pip install -r server/requirements.txt
 
