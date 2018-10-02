@@ -1,4 +1,4 @@
-FROM nginx:3.6
+FROM nginx:1.15
 
 ENV WS_SERVER "ws://localhost:8080/"
 
